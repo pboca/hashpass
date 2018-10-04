@@ -2945,7 +2945,15 @@ function parseHexString(str) {
         result.push(parseInt(str.substring(0, 2), 16));
         str = str.substring(2, str.length);
     }
+    return result;
+}
 
+function foldArray(arr) {
+
+    var result = [];
+    for (var i = 0; i < arr.length/2; i++) {
+        result.push((arr[i] ^ arr[i+arr.length/2]));
+    }
     return result;
 }
 
@@ -2970,6 +2978,12 @@ function generatePassword(entropy, key, domain, username, index) {
     const input_pwd = entropy+'$'+key+'$'+domain+'$'+username+'$'+index;
     const hash = sha256(input_pwd);
     return base85.fromByteArray(parseHexString(hash), false);
+}
+
+function generateFoldedPassword(entropy, key, domain, username, index) {
+    const input_pwd = entropy+'$'+key+'$'+domain+'$'+username+'$'+index;
+    const hash = sha256(input_pwd);
+    return base85.fromByteArray(foldArray(parseHexString(hash)), false);
 }
 
 function setCookie(name,value,days) {

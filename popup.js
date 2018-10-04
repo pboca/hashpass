@@ -112,7 +112,7 @@ $(function() {
                 var key = $('#key').val();
                 username = $('#user').val();
 
-                var pwd = generatePassword(entropy, key, domain, username, '0');
+                var pwd = generateFoldedPassword(entropy, key, domain, username, '0');
                 
                 if (!passwordMode)
                 {

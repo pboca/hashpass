@@ -15,6 +15,10 @@
 
 
 $(function() {
+  var saved_mnemonic = getCookie('mnemonic');
+  if (saved_mnemonic !== null)
+      $('#mnemonic').val(saved_mnemonic)
+
   var update = function() {
     // Compute the first 16 base64 characters of iterated-SHA-256(domain + '/' + key, 2 ^ difficulty).
     var key = $('#key').val();
@@ -30,6 +34,8 @@ $(function() {
         return;
     }
     $('#message').removeClass('error').text("");
+    
+    setCookie('mnemonic', mnemonic, 30);
 
     var pwd = generatePassword(entropy, key, domain, username, '0');
     

@@ -15,6 +15,8 @@
 
 
 $(function() {
+  runTests();
+
   var saved_mnemonic = getCookie('mnemonic');
   if (saved_mnemonic !== null)
       $('#mnemonic').val(saved_mnemonic)

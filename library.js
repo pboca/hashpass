@@ -2994,3 +2994,19 @@ function getCookie(name) {
 function eraseCookie(name) {   
     document.cookie = name+'=; Max-Age=-99999999;';  
 }
+
+function runTests() {
+    // run some tests
+    var en_check = "7543b6a357a043d7494b91942360a309aa2405b049c98f788763205401298765";
+    var m_check = "inspire buffalo potato quantum aerobic two cement impulse neither brand churn battle pelican actress scorpion decrease month service sugar doll divorce network budget resource";
+    var pass_test = 'DNW*JA*:!(\\]j[2a$I"Cd9mgmF7V<$kWG![01T\\/';
+
+    if (entropyToMnemonic(en_check, enwords) !== m_check)
+        alert("Failed to verify `entropyToMnemonic`");
+
+    if (mnemonicToEntropy(m_check, enwords) !== en_check)
+        alert("Failed to verify `mnemonicToEntropy`");
+
+    if (generatePassword(en_check, "Test key", "example.com", "test@example.com", '0') != pass_test)
+        alert("Failed to verify `generatePassword`");
+}

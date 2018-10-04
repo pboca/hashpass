@@ -39,9 +39,11 @@ $(function() {
     
     setCookie('mnemonic', mnemonic, 30);
 
-    var pwd = generateFoldedPassword(entropy, key, domain, username, '0');
+    var pwd = generatePassword(entropy, key, domain, username, '0');
+    var pwd_folded = generateFoldedPassword(entropy, key, domain, username, '0');
     
     $('#hash').val(pwd);
+    $('#hash_folded').val(pwd_folded);
     $('#entropy').val(entropy);
   };
   

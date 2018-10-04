@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Hashpass</title>
+    <title>Hashpass Options</title>
     <style type="text/css">
       html {
         margin: 0;
@@ -11,17 +11,16 @@
       body {
         margin: 0;
         padding: 0;
-        width: 332px;
+        width: 432px;
         font-family: sans-serif;
         font-size: 0.9em;
         color: #333;
       }
 
-      input {
+      input, textarea {
         display: block;
         box-sizing: border-box;
-        width: 300px;
-        height: 40px;
+        width: 400px;
         border: 2px solid #ddd;
         border-radius: 2px;
         padding: 8px 12px;
@@ -30,13 +29,14 @@
         line-height: 20px;
         font-size: 1.2em;
         color: inherit;
+        background: #FFF;
       }
 
       input:focus {
         border-color: #f872ae;
       }
 
-      input, p {
+      input, p, textarea {
         margin: 16px;
       }
 
@@ -49,7 +49,7 @@
       }
 
       .disabled {
-        color: #ccc;
+        color: #777;
       }
 
       input.disabled {
@@ -59,21 +59,38 @@
       .error {
         color: #c00;
       }
+      
+      @media screen
+      {
+          .noPrint{}
+          .noScreen{display:none;}
+      }
+
+      @media print
+      {
+          .noPrint{display:none;}
+          .noScreen{}
+      }
     </style>
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="sjcl.js"></script>
     <script type="text/javascript" src="library.js"></script>
-    <script type="text/javascript" src="popup.js"></script>
+    <script type="text/javascript" src="options.js"></script>
   </head>
   <body>
-    <p class="small-bottom-margin">Domain:</p>
-    <input id="domain" class="small-top-margin" type="text" />
-    <p class="small-bottom-margin">User:</p>
-    <input id="user" class="small-top-margin" type="text" />
-    <p class="small-bottom-margin">Master Key:</p>
-    <input id="key" class="small-top-margin" type="password" />
-    <p class="small-bottom-margin">Hash:</p>
-    <input id="hash" class="small-top-margin" type="text" readonly="true" />
+    <div class="noPrint">
+    <p class="small-bottom-margin">Mnemonic:</p>
+    <textarea cols="40" rows="3" style="resize: none;" id="mnemonic"></textarea>
+    
+    <p class="small-bottom-margin">Entropy:</p>
+    <input id="entropy" class="small-top-margin" type="text" disabled />
+    <input type="button" id="regenerate" value="Regenerate"/>
+    <input type="button" id="clear" value="Clear"/>
+    <input type="button" id="save" value="Save"/>
     <p id="message">&nbsp;</p>
+    </div>
+    <div class="noScreen">
+       test
+    </div>
   </body>
 </html>

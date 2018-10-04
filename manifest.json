@@ -3,10 +3,19 @@
 
   "name": "Hashpass",
   "description": "A simple, stateless password manager.",
-  "version": "1.9.8",
+  "version": "1.9.9",
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "tabs",
+    "http://*/*",
+    "https://*/*",
+    "chrome://favicon/",
+    "storage"
   ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
   "browser_action": {
     "default_icon": {
       "19":  "icon.png",

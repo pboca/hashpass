@@ -84,7 +84,7 @@ if (!window.hashpassLoaded) {
       if (request.type === 'getUserName') {
         activeDocument = getActiveDocument();
         if (activeDocument) {
-          var user_fields = ['user', 'identifier', 'username'];
+          var user_fields = ['user', 'identifier', 'username', 'email'];
 
           for (var i in user_fields) {
             if (activeDocument.getElementsByName(user_fields[i]).length > 0) {

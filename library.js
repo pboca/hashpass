@@ -2718,6 +2718,10 @@ var ascii85 = (function() {
 		85,
 		1
 	];
+    
+    function float2int (value) {
+        return value | 0;
+    }
 
 	function getEncodedChunk(tuple, bytes = 4)
 	{
@@ -2777,6 +2781,88 @@ var ascii85 = (function() {
 			}
 
 			let chunk = getEncodedChunk(tuple, bytes);
+			for(let j = 0; j < chunk.length; j++)
+			{
+				if(lineCounter >= LINE_WIDTH)
+				{
+					output.push(0x0d); // \n
+					lineCounter = 0;
+				}
+
+				output.push(chunk[j]);
+				lineCounter++;
+			}
+		}
+
+		if(useEOD)
+		{
+			output.push(0x7e); // ~
+			output.push(0x3e); // >
+		}
+
+		return String.fromCharCode.apply(null, output);
+	}
+    
+    var BASEEX = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz(!@#$%^*-_+=&amp;~).'
+    
+    function getEncodedChunkEx(tuple, bytes = 4)
+	{
+		var output;
+		let d = ((tuple[0] << 24) | (tuple[1] << 16) | (tuple[2] << 8) | tuple[3]) >>> 0;
+
+		if(d === 0 && bytes == 4)
+		{
+			output = new Uint8Array(1);
+			output[0] = 0x7a; // z
+		}
+		else
+		{
+			output = new Uint8Array(bytes + 1);
+
+			for(let i = 4; i >= 0; i--)
+			{
+				if(i <= bytes)
+				{
+					output[i] = BASEEX.charCodeAt(float2int(d % BASEEX.length)); // 0x21 = '!'
+				}
+
+				d /= float2int(BASEEX.length);
+			}
+		}
+
+		return output;
+	}
+    
+    function fromByteArrayEx (byteArray, useEOD = true)
+	{
+		let output = [];
+		let lineCounter = 0;
+
+		if(useEOD)
+		{
+			output.push(0x3c); // <
+			output.push(0x7e); // ~
+		}
+
+		for(let i = 0; i < byteArray.length; i += 4)
+		{
+			let tuple = new Uint8Array(4);
+			let bytes = 4;
+
+			for(let j = 0; j < 4; j++)
+			{
+				if(i + j < byteArray.length)
+				{
+					tuple[j] = byteArray[i + j];
+				}
+				else
+				{
+					tuple[j] = 0x00;
+					bytes--;
+				}
+			}
+
+			let chunk = getEncodedChunkEx(tuple, bytes);
 			for(let j = 0; j < chunk.length; j++)
 			{
 				if(lineCounter >= LINE_WIDTH)
@@ -2921,6 +3007,7 @@ var ascii85 = (function() {
 	}
 
 	return {
+		fromByteArrayEx: fromByteArrayEx,
 		fromByteArray: fromByteArray,
 		toByteArray: toByteArray,
 		encode: encode,
@@ -2984,6 +3071,12 @@ function generateFoldedPassword(entropy, key, domain, username, index) {
     const input_pwd = entropy+'$'+key+'$'+domain+'$'+username+'$'+index;
     const hash = sha256(input_pwd);
     return base85.fromByteArray(foldArray(parseHexString(hash)), false);
+}
+
+function generateFoldedPasswordEx(entropy, key, domain, username, index) {
+    const input_pwd = entropy+'$'+key+'$'+domain+'$'+username+'$'+index;
+    const hash = sha256(input_pwd);
+    return base85.fromByteArrayEx(foldArray(parseHexString(hash)), false);
 }
 
 function setCookie(name,value,days) {

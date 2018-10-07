@@ -37,9 +37,9 @@ $(function() {
       // Get the domain.
       var domain = null;
       var username = null;
-      var matches = tabs[0].url.match(/^http(?:s?):\/\/([^\.]*?\.)?([^\.]*\.[^/]*)/);
+      var matches = tabs[0].url.match(/(?:[^\.]*)(?:\/\/|\.)([^\/\.]*\.[^\/\.]*)/);
       if (matches) {
-        domain = matches[2].toLowerCase();
+        domain = matches[1].toLowerCase();
       } else {
         // Example cause: files served over the file:// protocol.
         return showError('Unable to determine the domain.');
@@ -112,7 +112,7 @@ $(function() {
                 var key = $('#key').val();
                 username = $('#user').val();
 
-                var pwd = generateFoldedPassword(entropy, key, domain, username, '0');
+                var pwd = generateFoldedPasswordEx(entropy, key, domain, username, '0');
                 
                 if (!passwordMode)
                 {

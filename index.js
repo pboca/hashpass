@@ -41,9 +41,11 @@ $(function() {
 
     var pwd = generatePassword(entropy, key, domain, username, '0');
     var pwd_folded = generateFoldedPassword(entropy, key, domain, username, '0');
+    var pwd_folded_ex = generateFoldedPasswordEx(entropy, key, domain, username, '0');
     
     $('#hash').val(pwd);
     $('#hash_folded').val(pwd_folded);
+    $('#hash_folded_ex').val(pwd_folded_ex);
     $('#entropy').val(entropy);
   };
   
